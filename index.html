@@ -1,262 +1,390 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Cajuína</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #FFF8F1;
+      background: #FFF8F1;
       color: #333;
-      padding: 25px 20px;
+      padding: 20px;
       max-width: 600px;
-      margin: 0 auto;
+      margin: auto;
     }
-    .quiz-page {
-      display: none;
-    }
-    .quiz-page.active {
-      display: block;
-    }
-    .options button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 14px;
-      background-color: #f28c28;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .options button.selected {
-      background-color: #d14f4f;
-    }
-    .nextBtn {
-      display: block;
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    #result {
+    h1, h2 {
       text-align: center;
-      font-size: 1.2rem;
       color: #d14f4f;
+    }
+    .pergunta {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .pergunta.ativa {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .options {
       margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    button.option-btn {
+      padding: 12px;
+      border: none;
+      background: #f28c28;
+      color: white;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+    button.option-btn:hover {
+      background: #d16f1b;
+    }
+    button.option-btn.selected {
+      background: #d14f4f;
+    }
+    .navegacao {
+      text-align: center;
+      margin-top: 24px;
+    }
+    .navegacao button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #d14f4f;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .navegacao button:hover {
+      background: #b53e3e;
     }
     input[type="text"] {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 15px;
+      padding: 12px;
+      margin-bottom: 14px;
       border-radius: 8px;
       border: 2px solid #f28c28;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
     }
-    button.finalBtn {
-      background: linear-gradient(90deg, #d14f4f, #f28c28);
-      padding: 14px;
+    input[type="text"]:focus {
+      border-color: #d14f4f;
+      outline: none;
+    }
+    .progress-container {
       width: 100%;
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    #goSiteBtn {
-      margin-top: 20px;
-      background: #f28c28;
-      padding: 12px;
-      border: none;
+      background-color: #f1f1f1;
       border-radius: 10px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 10px;
+      background-color: #f28c28;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    .resultado {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .resultado.mostrar {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fragrance-details {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-  <h1>Descubra sua fragrância Cajuína</h1>
+  <h1>🌸 Descubra sua fragrância Cajuína 🌸</h1>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
 
   <form id="quizForm">
-    <div class="quiz-page active" data-name="momento">
-      <label>1. Que momento do dia mais combina com você?</label>
+    <div class="pergunta ativa" data-index="0" data-name="momento">
+      <h2>☀️ Que momento do dia mais combina com você?</h2>
       <div class="options">
-        <button type="button">Manhã ensolarada e cheia de energia</button>
-        <button type="button">Tarde preguiçosa com brisa leve</button>
-        <button type="button">Entardecer nostálgico e caloroso</button>
-        <button type="button">Noite romântica com luz baixa</button>
+        <button type="button" class="option-btn">🌞 Manhã ensolarada e cheia de energia</button>
+        <button type="button" class="option-btn">🌤️ Tarde preguiçosa com brisa leve</button>
+        <button type="button" class="option-btn">🌇 Entardecer nostálgico e caloroso</button>
+        <button type="button" class="option-btn">🌙 Noite romântica com luz baixa</button>
       </div>
-      <button type="button" class="nextBtn">Próxima</button>
     </div>
 
-    <div class="quiz-page" data-name="estilo">
-      <label>2. Qual estilo de fragrância você prefere?</label>
+    <div class="pergunta" data-index="1" data-name="estilo">
+      <h2>🎨 Qual estilo de fragrância você prefere?</h2>
       <div class="options">
-        <button type="button">Cítricos vibrantes e solares</button>
-        <button type="button">Doces, com cheirinho de sobremesa</button>
-        <button type="button">Florais suaves e envolventes</button>
-        <button type="button">Amadeirados e especiados</button>
+        <button type="button" class="option-btn">🍊 Cítricos vibrantes e solares</button>
+        <button type="button" class="option-btn">🍬 Doces, com cheirinho de sobremesa</button>
+        <button type="button" class="option-btn">🌸 Florais suaves e envolventes</button>
+        <button type="button" class="option-btn">🌰 Amadeirados e especiados</button>
       </div>
-      <button type="button" class="nextBtn">Próxima</button>
     </div>
 
-    <div class="quiz-page" data-name="musica">
-  <label>3. Que música te representa?</label>
-  <div class="options">
-    <button type="button">
-      🎶 <strong>Samba de Verão – leve e ensolarada</strong><br/>
-      <small>“Olha, é como o verão quente o coração<br/>
-      E o coração salta de repente só pra ver a menina que vem<br/>
-      Ela vem, sempre tem esse mar no olhar”</small>
-    </button>
-    <button type="button">
-      💙 <strong>Azul – romântica e sensível</strong><br/>
-      <small>“Corre e vá dizer pro meu benzinho<br/>
-      Um dizer assim<br/>
-      O amor é azulzinho”</small>
-    </button>
-    <button type="button">
-      🎤 <strong>Toda Menina Baiana – vibrante e cheia de bossa</strong><br/>
-      <small>“Toda menina baiana tem encantos que Deus dá<br/>
-      Toda menina baiana tem um jeito que Deus dá”</small>
-    </button>
-    <button type="button">
-      🌧️ <strong>Banho de Chuva – limpa e refrescante</strong><br/>
-      <small>“Aonde o vento é brisa<br/>
-      O que a gente precisa<br/>
-      É tomar um banho de chuva”</small>
-    </button>
-  </div>
-  <button type="button" class="nextBtn">Próxima</button>
-    </div>
-
-    <div class="quiz-page" data-name="cor">
-      <label>4. Qual cor te representa hoje?</label>
+    <div class="pergunta" data-index="2" data-name="musica">
+      <h2>🎵 Que música te representa?</h2>
       <div class="options">
-        <button type="button">Laranja vibrante, amarelo solar</button>
-        <button type="button">Rosa, azulzinho</button>
-        <button type="button">Verde colorido</button>
-        <button type="button">Dourado</button>
+        <button type="button" class="option-btn">🎶 Samba de Verão – leve e ensolarada</button>
+        <button type="button" class="option-btn">💙 Azul – romântica e sensível</button>
+        <button type="button" class="option-btn">🎤 Toda Menina Baiana – vibrante e cheia de bossa</button>
+        <button type="button" class="option-btn">🌧️ Banho de Chuva – limpa e refrescante</button>
       </div>
-      <button type="button" class="nextBtn">Próxima</button>
     </div>
 
-    <div class="quiz-page" data-name="ambiente">
-      <label>5. Qual ambiente da casa você gostaria de perfumar?</label>
+    <div class="pergunta" data-index="3" data-name="cor">
+      <h2>🎨 Qual cor te representa hoje?</h2>
       <div class="options">
-        <button type="button">Quarto</button>
-        <button type="button">Sala de jantar</button>
-        <button type="button">Banheiro</button>
-        <button type="button">Varanda ou sala</button>
+        <button type="button" class="option-btn">🧡 Laranja vibrante, amarelo solar</button>
+        <button type="button" class="option-btn">💗 Rosa, azulzinho</button>
+        <button type="button" class="option-btn">💚 Verde colorido</button>
+        <button type="button" class="option-btn">✨ Dourado</button>
       </div>
-      <button type="button" class="nextBtn">Próxima</button>
     </div>
 
-    <div class="quiz-page" data-name="viagem">
-      <label>6. Qual seria seu date ou viagem ideal?</label>
+    <div class="pergunta" data-index="4" data-name="ambiente">
+      <h2>🏠 Qual ambiente da casa você gostaria de perfumar?</h2>
       <div class="options">
-        <button type="button">Fim de semana tropical com suco e sol</button>
-        <button type="button">Piquenique com flores e doces</button>
-        <button type="button">Viagem sensorial pelo Brasil</button>
-        <button type="button">Jantar à luz de velas e perfume marcante</button>
+        <button type="button" class="option-btn">🛏️ Quarto</button>
+        <button type="button" class="option-btn">🍽️ Sala de jantar</button>
+        <button type="button" class="option-btn">🚿 Banheiro</button>
+        <button type="button" class="option-btn">🌿 Varanda ou sala</button>
       </div>
-      <button type="button" class="nextBtn">Próxima</button>
     </div>
 
-    <div class="quiz-page" data-name="sensacao">
-      <label>7. Qual sensação você quer deixar no ar?</label>
+    <div class="pergunta" data-index="5" data-name="viagem">
+      <h2>✈️ Qual seria seu date ou viagem ideal?</h2>
       <div class="options">
-        <button type="button">Aconchego e romance</button>
-        <button type="button">Leveza e frescor</button>
-        <button type="button">Alegria e diversão</button>
-        <button type="button">Intensidade e presença</button>
+        <button type="button" class="option-btn">🍹 Fim de semana tropical com suco e sol</button>
+        <button type="button" class="option-btn">🍓 Piquenique com flores e doces</button>
+        <button type="button" class="option-btn">✈️ Viagem sensorial pelo Brasil</button>
+        <button type="button" class="option-btn">🍷 Jantar à luz de velas e perfume marcante</button>
       </div>
-      <button type="button" class="nextBtn">Próxima</button>
     </div>
 
-    <div class="quiz-page" data-name="final">
-      <label>Seu nome:</label>
-      <input type="text" id="nome" required />
-      <label>Seu WhatsApp:</label>
-      <input type="text" id="whatsapp" required />
-      <button type="button" class="finalBtn">Ver resultado</button>
+    <div class="pergunta" data-index="6" data-name="sensacao">
+      <h2>🌬️ Qual sensação você quer deixar no ar?</h2>
+      <div class="options">
+        <button type="button" class="option-btn">💞 Aconchego e romance</button>
+        <button type="button" class="option-btn">🌊 Leveza e frescor</button>
+        <button type="button" class="option-btn">🌈 Alegria e diversão</button>
+        <button type="button" class="option-btn">🔥 Intensidade e presença</button>
+      </div>
+    </div>
+
+    <div class="pergunta" data-index="7">
+      <h2>💬 Me conta rapidinho:</h2>
+      <input type="text" id="nome" placeholder="Seu nome" required>
+      <input type="text" id="whatsapp" placeholder="Seu WhatsApp (com DDD)" required>
+    </div>
+
+    <div class="navegacao">
+      <button type="button" id="nextBtn">Próximo</button>
     </div>
   </form>
 
-  <div id="result"></div>
-  <button id="goSiteBtn" style="display:none" onclick="window.location.href='https://www.cajuinavelas.com.br'">Ir para o site da Cajuína</button>
-<script>
-  function recomendarFragrancia(respostas) {
-    const { momento, estilo, musica, cor, ambiente, viagem, sensacao } = respostas;
+  <div class="resultado" id="resultado">
+    <h2>✨ Sua fragrância ideal é: <span id="fragranciaNome"></span> ✨</h2>
+    <div class="fragrance-details" id="fragranceDetails"></div>
+    <div class="navegacao">
+      <button type="button" id="siteBtn">Conhecer a Cajuína Velas</button>
+    </div>
+  </div>
 
-    if (estilo.includes('Cítricos') && momento.includes('Manhã')) return '🍊 Borogodó';
-    if (estilo.includes('Cítricos') && momento.includes('Tarde')) return '🍊 Gominhos de Tangerina';
-    if (estilo.includes('Cítricos') && momento.includes('Entardecer')) return '🍉 Wax Melt de Melancia';
-    if (estilo.includes('Cítricos') && viagem.includes('tropical')) return '🥭 Wax Melt Manga Verde';
+  <script>
+    const perguntas = document.querySelectorAll('.pergunta');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+    const resultado = document.getElementById('resultado');
+    const fragranciaNome = document.getElementById('fragranciaNome');
+    const fragranceDetails = document.getElementById('fragranceDetails');
+    const siteBtn = document.getElementById('siteBtn');
+    const quizForm = document.getElementById('quizForm');
+    let currentIndex = 0;
+    const respostas = {};
+    const totalPerguntas = perguntas.length;
 
-    if (estilo.includes('Doces') && sensacao.includes('diversão')) return '🍓 Wax Melt Sorbet de Morango';
-    if (estilo.includes('Doces') && momento.includes('Noite')) return '🔥 Anunciação';
-    if (estilo.includes('Doces') && viagem.includes('flores')) return '🍑 Wax Melt de Pêssego';
+    // Atualiza a barra de progresso
+    function updateProgress() {
+      const progress = ((currentIndex + 1) / totalPerguntas) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
 
-    if (estilo.includes('Florais') && musica.includes('Azul')) return '💗 Cheiro de Amor';
-    if (estilo.includes('Florais') && sensacao.includes('romance')) return '💗 Cheiro de Amor';
+    // Inicializa a barra de progresso
+    updateProgress();
 
-    if (estilo.includes('Amadeirados') && momento.includes('Noite')) return '🔥 Anunciação';
-    if (ambiente.includes('Banheiro') && estilo.includes('frescor')) return '🌊 Águas de Março';
-
-    return '🌊 Águas de Março';
-  }
-
-  let currentPage = 0;
-  const pages = document.querySelectorAll('.quiz-page');
-  const responses = {};
-
-  document.querySelectorAll('.options button').forEach(button => {
-    button.addEventListener('click', () => {
-      const group = button.closest('.options');
-      group.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
-      button.classList.add('selected');
-    });
-  });
-
-  document.querySelectorAll('.nextBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const page = pages[currentPage];
-      const selected = page.querySelector('button.selected');
-      if (!selected) return alert('Escolha uma opção!');
-      responses[page.dataset.name] = selected.textContent;
-      page.classList.remove('active');
-      pages[++currentPage].classList.add('active');
-    });
-  });
-
-  document.querySelector('.finalBtn').addEventListener('click', () => {
-    const nome = document.getElementById('nome').value.trim();
-    const whatsapp = document.getElementById('whatsapp').value.trim();
-    if (!nome || !whatsapp) return alert('Preencha seu nome e WhatsApp');
-    responses.nome = nome;
-    responses.whatsapp = whatsapp;
-    responses.fragrancia = recomendarFragrancia(responses);
-    document.getElementById('result').innerHTML = `✨ <strong>${nome}</strong>, sua fragrância é <strong>${responses.fragrancia}</strong>!`;
-    document.getElementById('goSiteBtn').style.display = 'block';
-
-    fetch('https://api.sheetmonkey.io/form/2Sn477C1c5SgcteSxN61pB', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(responses)
+    document.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const pergunta = this.closest('.pergunta');
+        const key = pergunta.getAttribute('data-name');
+        
+        // Remove a seleção de todos os botões da mesma pergunta
+        const opcoes = pergunta.querySelectorAll('.option-btn');
+        opcoes.forEach(opcao => opcao.classList.remove('selected'));
+        
+        // Seleciona o botão clicado
+        this.classList.add('selected');
+        
+        // Armazena a resposta
+        respostas[key] = this.textContent.trim();
+      });
     });
 
-    pages[currentPage].classList.remove('active');
-  });
-</script>
+    nextBtn.addEventListener('click', function() {
+      const perguntaAtual = perguntas[currentIndex];
+      const temOpcoes = perguntaAtual.querySelector('.options') !== null;
+
+      // Validação para perguntas com opções
+      if (temOpcoes) {
+        const opcaoSelecionada = perguntaAtual.querySelector('.option-btn.selected');
+        if (!opcaoSelecionada) {
+          alert('Por favor, selecione uma opção antes de continuar.');
+          return;
+        }
+      } 
+      // Validação para a última pergunta (campos de texto)
+      else if (currentIndex === perguntas.length - 1) {
+        const nome = document.getElementById('nome').value.trim();
+        const whatsapp = document.getElementById('whatsapp').value.trim();
+        
+        if (!nome || !whatsapp) {
+          alert('Por favor, preencha seu nome e WhatsApp.');
+          return;
+        }
+        
+        respostas.nome = nome;
+        respostas.whatsapp = whatsapp;
+      }
+
+      // Atualiza o texto do botão para a última pergunta
+      if (currentIndex === perguntas.length - 2) {
+        nextBtn.textContent = 'Ver Resultado';
+      }
+
+      // Se for a última pergunta, mostra o resultado
+      if (currentIndex === perguntas.length - 1) {
+        mostrarResultado();
+        return;
+      }
+
+      // Avança para a próxima pergunta com transição suave
+      perguntas[currentIndex].classList.remove('ativa');
+      setTimeout(() => {
+        currentIndex++;
+        perguntas[currentIndex].classList.add('ativa');
+        updateProgress();
+      }, 300); // Tempo para a animação de saída
+    });
+
+    function mostrarResultado() {
+      const fragrancia = recomendarFragrancia(respostas);
+      
+      // Envia os dados para a API
+      const data = { fragrancia: fragrancia.nome, ...respostas };
+      fetch('https://api.sheetmonkey.io/form/2Sn477C1c5SgcteSxN61pB', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // Mostra o resultado
+      quizForm.style.display = 'none';
+      fragranciaNome.textContent = fragrancia.nome;
+      
+      // Preenche os detalhes da fragrância
+      fragranceDetails.innerHTML = `
+        <p><strong>Família:</strong> ${fragrancia.familia}</p>
+        <p><strong>Notas:</strong> ${fragrancia.notas}</p>
+        <p><strong>Sensação:</strong> ${fragrancia.sensacao}</p>
+        <p><strong>Inspiração:</strong> ${fragrancia.inspiracao}</p>
+      `;
+      
+      // Mostra o resultado com animação
+      setTimeout(() => {
+        resultado.classList.add('mostrar');
+      }, 100);
+    }
+
+    siteBtn.addEventListener('click', function() {
+      window.location.href = 'https://cajuinavelas.com.br';
+    });
+
+    function recomendarFragrancia(r) {
+      // Lógica de recomendação melhorada
+      if ((r.estilo?.includes('Cítricos') && r.momento?.includes('Manhã')) || 
+          (r.musica?.includes('Samba de Verão') && r.sensacao?.includes('Alegria'))) {
+        return {
+          nome: 'Borogodó',
+          familia: 'Cítrica | Frutada | Energizante',
+          notas: 'Laranja, Grapefruit, Rosa, Sândalo',
+          sensacao: 'Vibrante, tropical, ensolarada',
+          inspiracao: 'Perfumes que energizam e animam, com toque floral cremoso'
+        };
+      }
+      
+      if ((r.estilo?.includes('Florais') && r.sensacao?.includes('romance')) || 
+          (r.musica?.includes('Azul') && r.viagem?.includes('flores'))) {
+        return {
+          nome: 'Cheiro de Amor',
+          familia: 'Floral | Ambarada | Adocicada',
+          notas: 'Jasmim, Rosa, Pêssego, Baunilha, Sândalo',
+          sensacao: 'Romântica, adocicada, acolhedora',
+          inspiracao: 'Amor Amor (Cacharel), perfumes femininos com toque floral-frutado'
+        };
+      }
+      
+      if (r.sensacao?.includes('frescor') || r.musica?.includes('Banho de Chuva') || 
+          r.ambiente?.includes('Banheiro')) {
+        return {
+          nome: 'Águas de Março',
+          familia: 'Aquática | Fresca | Suave',
+          notas: 'Pera, Limão, Lavanda, Musk, Madeira suave',
+          sensacao: 'Leve, limpa, banho tomado',
+          inspiracao: 'Aromas refrescantes com lavanda e musk, ideal para dias quentes'
+        };
+      }
+      
+      if (r.viagem?.includes('tropical') || r.cor?.includes('Laranja') || 
+          r.musica?.includes('Toda Menina Baiana')) {
+        return {
+          nome: 'Morena Tropicana',
+          familia: 'Frutal | Cítrico | Doce',
+          notas: 'Manga verde, Laranja, Orquídea, Caramelo',
+          sensacao: 'Frutada, nostálgica, aconchegante',
+          inspiracao: 'Tropicalidade brasileira, verão, infância no quintal'
+        };
+      }
+      
+      // Padrão para outras combinações
+      return {
+        nome: 'Anunciação',
+        familia: 'Especiada | Doce | Amadeirada',
+        notas: 'Canela, Mandarina, Ameixa, Fava tonka',
+        sensacao: 'Quente, intensa, marcante',
+        inspiracao: 'Aromas para noites especiais, clima envolvente'
+      };
+    }
+  </script>
 </body>
 </html>
