@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Qual fragrância é a sua cara?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #FFF8F1;
+      color: #333;
+      padding: 25px 20px;
+      max-width: 650px;
+      margin: 0 auto 50px;
+      user-select: none;
+    }
+    h1, h2 {
+      color: #d14f4f;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .pergunta {
+      margin-bottom: 28px;
+    }
+    .pergunta label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .options button {
+      flex: 1 1 48%;
+      min-width: 180px;
+      padding: 14px 18px;
+      background-color: #f28c28;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .options button:hover {
+      background-color: #d16f1b;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    }
+    .options button.selected {
+      background-color: #d14f4f;
+      box-shadow: 0 0 12px 3px rgba(209,79,79,0.7);
+    }
+    .options button small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      opacity: 0.8;
+      display: block;
+      margin-top: 5px;
+      line-height: 1.2;
+      font-style: italic;
+      white-space: normal;
+    }
+    input[type="text"] {
+      padding: 12px 15px;
+      width: 100%;
+      margin-bottom: 18px;
+      border-radius: 10px;
+      border: 2px solid #f28c28;
+      font-size: 1.05rem;
+      font-weight: 500;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #d14f4f;
+      box-shadow: 0 0 6px #d14f4f88;
+    }
+    button#submitBtn {
+      display: block;
+      width: 100%;
+      padding: 16px 0;
+      margin-top: 12px;
+      background: linear-gradient(90deg, #d14f4f, #f28c28);
+      border: none;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(209,79,79,0.7);
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    button#submitBtn:hover {
+      background: linear-gradient(90deg, #f28c28, #d14f4f);
+    }
+    #result {
+      margin-top: 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #d14f4f;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Descubra sua fragrância Cajuína</h1>
+
+  <form id="quizForm" autocomplete="off">
+
+    <!-- Pergunta 1 -->
+    <div class="pergunta" data-name="momento">
+      <label>1. Que momento do dia mais combina com você?</label>
+      <div class="options">
+        <button type="button">Manhã ensolarada e cheia de energia</button>
+        <button type="button">Tarde preguiçosa com brisa leve</button>
+        <button type="button">Entardecer nostálgico e caloroso</button>
+        <button type="button">Noite romântica com luz baixa</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 2 -->
+    <div class="pergunta" data-name="estilo">
+      <label>2. Qual estilo de fragrância você prefere?</label>
+      <div class="options">
+        <button type="button">Cítricos vibrantes e solares</button>
+        <button type="button">Doces, com cheirinho de sobremesa</button>
+        <button type="button">Florais suaves e envolventes</button>
+        <button type="button">Amadeirados e especiados</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 3 -->
+    <div class="pergunta" data-name="musica">
+      <label>3. Que música te representa?</label>
+      <div class="options">
+        <button type="button">
+          <strong>🎶 Samba de Verão – leve e ensolarada</strong><br/>
+          <small>“Olha, é como o verão quente o coração<br/>E o coração salta de repente só pra ver a menina que vem<br/>Ela vem, sempre tem esse mar no olhar”</small>
+        </button>
+        <button type="button">
+          <strong>💙 Azul – romântica e sensível</strong><br/>
+          <small>“Corre e vá dizer pro meu benzinho<br/>Um dizer assim<br/>O amor é azulzinho”</small>
+        </button>
+        <button type="button">
+          <strong>🎤 Toda Menina Baiana – vibrante e cheia de bossa</strong><br/>
+          <small>“Toda menina baiana tem encantos que Deus dá<br/>Toda menina baiana tem um jeito que Deus dá”</small>
+        </button>
+        <button type="button">
+          <strong>🌧️ Banho de Chuva – limpa e refrescante</strong><br/>
+          <small>“Aonde o vento é brisa<br/>O que a gente precisa<br/>É tomar um banho de chuva”</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pergunta 4 -->
+    <div class="pergunta" data-name="cor">
+      <label>4. Qual cor te representa hoje?</label>
+      <div class="options">
+        <button type="button">Laranja vibrante, amarelo solar</button>
+        <button type="button">Rosa, azulzinho</button>
+        <button type="button">Verde colorido</button>
+        <button type="button">Dourado</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 5 -->
+    <div class="pergunta" data-name="ambiente">
+      <label>5. Qual ambiente da casa você gostaria de perfumar?</label>
+      <div class="options">
+        <button type="button">Quarto</button>
+        <button type="button">Sala de jantar</button>
+        <button type="button">Banheiro</button>
+        <button type="button">Varanda ou sala</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 6 -->
+    <div class="pergunta" data-name="viagem">
+      <label>6. Qual seria seu date ou viagem ideal?</label>
+      <div class="options">
+        <button type="button">Fim de semana tropical com suco e sol</button>
+        <button type="button">Piquenique com flores e doces</button>
+        <button type="button">Viagem sensorial pelo Brasil</button>
+        <button type="button">Jantar à luz de velas e perfume marcante</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 7 -->
+    <div class="pergunta" data-name="sensacao">
+      <label>7. Qual sensação você quer deixar no ar?</label>
+      <div class="options">
+        <button type="button">Aconchego e romance</button>
+        <button type="button">Leveza e frescor</button>
+        <button type="button">Alegria e diversão</button>
+        <button type="button">Intensidade e presença</button>
+      </div>
+    </div>
+
+    <h2>Antes de ver seu resultado, me conta:</h2>
+    <input type="text" id="nome" placeholder="Seu nome" required />
+    <input type="text" id="whatsapp" placeholder="Seu WhatsApp (com DDD)" required />
+
+    <button type="button" id="submitBtn" onclick="enviar()">Ver tudo no site da Cajuína</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    // Seleção única por pergunta com visual
+    document.querySelectorAll('.pergunta').forEach(pergunta => {
+      const buttons = pergunta.querySelectorAll('button');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        });
+      });
+    });
+
+    function enviar() {
+      const nome = document.getElementById('nome').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+
+      if (!nome || !whatsapp) {
+        alert('Por favor, preencha seu nome e WhatsApp.');
+        return;
+      }
+
+      // Coleta respostas
+      const respostas = {};
+      let tudoRespondido = true;
+      document.querySelectorAll('.pergunta').forEach(pergunta => {
+        const nomeCampo = pergunta.getAttribute('data-name');
+        const btnSelecionado = pergunta.querySelector('button.selected');
+        if (!btnSelecionado) {
+          tudoRespondido = false;
+        } else {
+          respostas[nomeCampo] = btnSelecionado.textContent;
+        }
+      });
+
+      if (!tudoRespondido) {
+        alert('Por favor, responda todas as perguntas.');
+        return;
+      }
+
+      // Dados para envio, inclui fragrância padrão (você pode alterar)
+      const data = {
+        nome,
+        whatsapp,
+        fragrancia: "Fragrância ideal detectada",
+        ...respostas
+      };
+
+      fetch('https://api.sheetmonkey.io/form/2Sn477C1c5SgcteSxN61pB', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(() => {
+        window.location.href = "https://www.cajuinavelas.com.br";
+      })
+      .catch(err => {
+        console.error(err);
+        window.location.href = "https://www.cajuinavelas.com.br";
+      });
+    }
+  </script>
+</body>
+</html>
+
