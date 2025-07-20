@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Cajuína</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link href="assets\img\favicon.jpeg" class="js-favicon" rel="icon" type="image/x-icon" />
-  <link href="assets\img\favicon.jpeg" class="js-favicon" rel="shortcut icon" type="image/x-icon" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -19,6 +17,13 @@
     h1, h2 {
       text-align: center;
       color: #d14f4f;
+    }
+    h1{
+      font-size: 1.8em;
+    }
+    .logo {
+        margin: 0 auto;
+        display: block;
     }
     .pergunta {
       display: none;
@@ -115,9 +120,81 @@
       margin: 15px 0;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+    /* Estilos LGPD */
+    .lgpd-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .lgpd-content {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      margin: 20px;
+    }
+    .lgpd-content h2 {
+      color: #d14f4f;
+      margin-top: 0;
+    }
+    .lgpd-content button {
+      background: #d14f4f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .lgpd-checkbox {
+      margin: 15px 0;
+      display: flex;
+      align-items: flex-start;
+    }
+    .lgpd-checkbox input {
+      margin-right: 10px;
+      margin-top: 3px;
+    }
+    .lgpd-checkbox label {
+      font-size: 0.9rem;
+    }
+    .lgpd-checkbox a {
+      color: #d14f4f;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+  <!-- Modal LGPD -->
+  <div class="lgpd-modal" id="lgpdModal">
+    <div class="lgpd-content">
+      <h2>Proteção de Dados Pessoais</h2>
+      <p>A Cajuína Velas respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018).</p>
+      
+      <p><strong>Como usamos seus dados:</strong></p>
+      <ul>
+        <li>Os dados coletados serão utilizados exclusivamente para envio do resultado do quiz e, eventualmente, para compartilhamento de novidades e promoções da Cajuína Velas.</li>
+        <li>Seus dados não serão compartilhados com terceiros sem sua autorização explícita.</li>
+        <li>Você pode solicitar a exclusão de seus dados a qualquer momento entrando em contato conosco.</li>
+      </ul>
+      
+      <p>Ao continuar, você concorda com nossa <a href="https://cajuinavelas.com.br/politica-de-privacidade" target="_blank">Política de Privacidade</a> e com o tratamento dos seus dados pessoais para as finalidades descritas.</p>
+      
+      <button type="button" id="acceptLgpd">Aceitar e continuar</button>
+    </div>
+  </div>
+
+  <img class="logo" src="assets/img/logo.png" alt="Cajuína Velas Logo" />
   <h1>🌸 Descubra sua fragrância Cajuína 🌸</h1>
 
   <div class="progress-container">
@@ -125,7 +202,7 @@
   </div>
 
   <form id="quizForm">
-    <div class="pergunta ativa" data-index="0" data-name="momento">
+    <div class="pergunta" data-index="0" data-name="momento">
       <h2>☀️ Que momento do dia mais combina com você?</h2>
       <div class="options">
         <button type="button" class="option-btn">🌞 Manhã ensolarada e cheia de energia</button>
@@ -199,6 +276,15 @@
       <h2>💬 Me conta rapidinho:</h2>
       <input type="text" id="nome" placeholder="Seu nome" required>
       <input type="text" id="whatsapp" placeholder="Seu WhatsApp (com DDD)" required>
+      
+      <div class="lgpd-checkbox">
+        <input type="checkbox" id="lgpdAccept" required>
+        <label for="lgpdAccept">
+          Concordo com o tratamento dos meus dados pessoais conforme a 
+          <a href="https://cajuinavelas.com.br/politica-de-privacidade" target="_blank">Política de Privacidade</a> 
+          e a LGPD (Lei 13.709/2018).
+        </label>
+      </div>
     </div>
 
     <div class="navegacao">
@@ -223,9 +309,24 @@
     const fragranceDetails = document.getElementById('fragranceDetails');
     const siteBtn = document.getElementById('siteBtn');
     const quizForm = document.getElementById('quizForm');
+    const lgpdModal = document.getElementById('lgpdModal');
+    const acceptLgpdBtn = document.getElementById('acceptLgpd');
+    
     let currentIndex = 0;
     const respostas = {};
     const totalPerguntas = perguntas.length;
+
+    // Mostrar modal LGPD ao carregar a página
+    document.addEventListener('DOMContentLoaded', function() {
+      lgpdModal.style.display = 'flex';
+    });
+    
+    // Esconder modal quando o usuário aceitar
+    acceptLgpdBtn.addEventListener('click', function() {
+      lgpdModal.style.display = 'none';
+      // Mostrar a primeira pergunta
+      perguntas[0].classList.add('ativa');
+    });
 
     // Atualiza a barra de progresso
     function updateProgress() {
@@ -269,14 +370,21 @@
       else if (currentIndex === perguntas.length - 1) {
         const nome = document.getElementById('nome').value.trim();
         const whatsapp = document.getElementById('whatsapp').value.trim();
+        const lgpdAccept = document.getElementById('lgpdAccept').checked;
         
         if (!nome || !whatsapp) {
           alert('Por favor, preencha seu nome e WhatsApp.');
           return;
         }
         
+        if (!lgpdAccept) {
+          alert('Por favor, aceite nossa política de privacidade para continuar.');
+          return;
+        }
+        
         respostas.nome = nome;
         respostas.whatsapp = whatsapp;
+        respostas.lgpd_accept = true;
       }
 
       // Atualiza o texto do botão para a última pergunta
